@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+<macrolist>
+        <macro id="nlfooter">
+            <table align="right" border="0" class="footer"><tr>
+	<td><#if companyInformation.companyname?length != 0>${companyInformation.companyname}</#if></td>
+	</tr></table>
+        </macro>
+    </macrolist>
+
+<style type="text/css">
+table {
+    font-family: sans-serif;
+    font-size: 9pt;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    font-weight: bold;
+    font-size: 10pt;
+    background-color: #00467F;
+    color: #ffffff;
+    padding: 8px;
+    border-bottom: 2px solid #dddddd;
+}
+
+td {
+    padding: 8px;
+    font-size: 9pt;
+    border-bottom: 1px solid #dddddd;
+    vertical-align: top; /* Ensures proper alignment */
+}
+
+.header td {
+    font-size: 10pt;
+    padding: 5px 0;
+}
+
+.footer td {
+    font-size: 8pt;
+    color: #ffffff;
+}
+
+.itemtable th {
+    padding: 10px;
+    text-align: left;
+}
+
+.itemtable td {
+    border: 1px solid #dddddd;
+    padding: 10px;
+}
+
+.total td {
+    color: #2B547E;
+    font-weight: bold;
+    text-align: right;
+    padding: 10px;
+}
+
+#flag {
+    float: right;
+    margin-left: 10px;
+}
+</style>
+</head>
+<body header="nlheader" footer="nlfooter" padding="0.5in 0.5in 0.5in 0.5in" size="Letter">
+
+    <table class="header" style="margin-bottom: 20px;">
+            <tr>
+              <!--Company information -->
+                <td align="left" colspan="4">
+                    <b>${companyInformation.companyname}</b><br />
+                    ${companyInformation.mainaddress_text}<br />
+                    ${companyInformation.phone}<br />
+                    ${companyInformation.email}
+                </td>
+                <td align="left">${record.trandate}</td>
+                <td align="right">
+                    <#if companyInformation.logoUrl?length != 0>
+                        <img height="50px" src="https://td2944546.app.netsuite.com/core/media/media.nl?id=8897&amp;c=TD2944546&amp;h=Ez9ODqRwEhr9v8uZ8pagrAmg1ZPEAE7dqBZkBxbl_9GuvLxV" vertical-align="top" width="100px" />
+                    </#if>
+                </td>
+            </tr>
+        </table>
+
+<!-- Billing and Shipping Address -->
+<table style="width: 100%; margin-top: 10px;">
+        <tr>
+            <td style="font-size: 8pt; padding: 20px 0 2px; font-weight: bold; color: #333333;" colspan="3">${record.billaddress@label}</td>
+            <td style="font-size: 8pt; padding: 6px 0 2px; font-weight: bold; color: #333333;" colspan="3">${record.shipaddress@label}</td>
+
+        </tr>
+        <tr>
+            <td style="padding: 0;" colspan="3">${record.billaddress}</td>
+            <td style="padding: 0;" colspan="3">${record.shipaddress}</td>
+        </tr>
+    </table>
+<!-- Sales Order Details -->
+<table style="margin-bottom: 20px;">
+    <tr>
+        <td colspan="4"><b>Sales Order Number:</b> ${record.tranid}</td>
+        <td colspan="4"><b>Order Date:</b> ${record.trandate}</td>
+        <td colspan="4"><b>Order Total:</b> ${record.total}</td>
+    </tr>
+</table>
+
+<!-- Items Table -->
+<#if record.item?has_content>
+    <table class="itemtable">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Description</th>
+                <th>Department</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list record.item as item>
+                <tr>
+                    <td>${item.item}</td>
+                    <td>${item.description}</td>
+                    <td>${item.department}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.rate}</td>
+                    <td>${item.amount}</td>
+                </tr>
+            </#list>
+        </tbody>
+    </table>
+</#if>
+
+<!-- Totals -->
+<table class="total">
+    <tr>
+        <td>Subtotal:</td>
+        <td>${record.subtotal}</td>
+    </tr>
+    <tr>
+        <td>Discount:</td>
+        <td>${record.discounttotal}</td>
+    </tr>
+    <tr>
+        <td>Tax Amount:</td>
+        <td>${record.taxtotal}</td>
+    </tr>
+    <tr>
+        <td><b>Total:</b></td>
+        <td><b>${record.total}</b></td>
+    </tr>
+</table>
+
+</body>
+</pdf>
