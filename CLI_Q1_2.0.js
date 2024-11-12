@@ -14,6 +14,7 @@ define(['N/currentRecord', 'N/ui/dialog'], function (currentRecord, dialog) {
 
    //Q1
    function pageInit(scriptContext) {
+      // Use the N/currentRecord module to access the record that is active in the current client context. 
       var current_Record = scriptContext.currentRecord; // I fetch the current record upon which I have to change any field
       var recordContext = current_Record.getValue({ // Get the fieldId of that field.
          fieldId: 'entity'
